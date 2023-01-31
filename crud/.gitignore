@@ -1,0 +1,12 @@
+.env/
+.venv/
+env/
+venv/
+*.env
+
+*.pyc
+# staticfiles/
+# static/
+# db.sqlite3
+
+*.log
