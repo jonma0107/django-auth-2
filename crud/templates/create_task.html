@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create Task</h1>
+
+{% if error %}
+
+  <div id="error">{{error}}</div>
+  <script>
+    setTimeout(function() {
+      document.querySelector("#error").style.display = "none";
+    }, 5000);
+  </script>
+
+{% endif %}  
+
+<form action="{% url 'create_tasks' %}" method="POST">
+  {% csrf_token %} 
+  {{form.as_p}}
+  <button>Crear Tarea</button>
+
+</form>
+
+{% endblock %}
