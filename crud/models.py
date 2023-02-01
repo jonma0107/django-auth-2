@@ -6,8 +6,8 @@ class Task(models.Model):
   titulo = models.CharField(max_length=100)
   descripcion = models.TextField(blank=True)
   creada=models.DateTimeField(auto_now_add=True)
-  realizada=models.DateTimeField(null=True)
-  importante=models.BooleanField(default=False)
+  completada=models.DateTimeField(null=True, blank=True)
+  realizada=models.BooleanField(default=False)
   user=models.ForeignKey(User, on_delete=models.CASCADE)
 
   def __str__(self):

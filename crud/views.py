@@ -1,46 +1,34 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm
 from .models import *
+from django.utils import timezone
 
 # Create your views here.
-
 
 def home(request):
   return render(request, 'home.html')
 
 def tasks(request):
-  lista = Task.objects.filter(user=request.user)
+  lista = Task.objects.filter(user=request.user, completada__isnull=True)
   return render(request, 'tasks.html', {'objetos':lista})  
 
 def create_tasks(request):
   if request.method == 'GET':
-    return render(request, 'create_task.html', {
-    'form': TaskForm
-    })
+    return render(request, 'create_task.html', { 'form': TaskForm })
   else:
     if request.POST['descripcion'] == '':
-      crear = render(request, 'create_task.html', {
-        'form': TaskForm,
-        'error': 'la descripcion debe llenarse'
-        })
-      return crear
-      
+      crear = render(request, 'create_task.html', { 'form': TaskForm, 'error': 'la descripcion debe llenarse' })
+      return crear      
     else:
       form = TaskForm(request.POST)
       task_new = form.save(commit=False)
       task_new.user = request.user
       task_new.save()
       return redirect('tasks')  
-
-# def delete_task(request, task_id):
-#   deleteTask = Task.objects.get(id=task_id)
-#   deleteTask.delete()
-#   return redirect('/')      
-  
 
 def signup(request):
   if request.method == 'GET':
@@ -74,6 +62,50 @@ def signin(request):
     else:
       login(request, user)
       return redirect('tasks')  
+
+# OBTENER y ACTUALIZAR TAREA
+def task_detail(request, task_id):
+  if request.method == 'GET':
+    # task = Task.objects.get(pk=task_id)
+    task = get_object_or_404(Task, pk=task_id, user=request.user) #se pasa el modelo a consultar (Task) y se obtiene la tarea
+    form = TaskForm(instance = task)
+    return render(request, 'task_detail.html', { 'task': task, 'form': form })
+  else:
+      if request.POST['descripcion'] == '':
+        task = get_object_or_404(Task, pk=task_id, user=request.user) #obtener nuevamente la tarea porque 'else' ya es otro bloque
+        form = TaskForm(request.POST, instance = task)
+        return render(request, 'task_detail.html', { 'task': task, 'form': form, 'error': 'La descripcion no debe estar vacía' })
+      else:
+        try:
+          task = get_object_or_404(Task, pk=task_id, user=request.user) #obtener nuevamente la tarea porque 'else' ya es otro bloque
+          form = TaskForm(request.POST, instance = task)#obtiene todos los datos : request.POST
+          form.save()
+          return redirect('tasks')
+        except ErrorValue:
+          return render(request, 'task_detail.html', { 'task': task, 'form': form, 'error': 'Error al actualizar' })
+
+# TAREA COMPLETADA : ELIMINADA
+def completed_task(request, task_id):
+  task = get_object_or_404(Task, pk=task_id, user=request.user)
+  try:
+    if request.method == 'POST':
+      form = TaskForm(request.POST, instance = task)#obtiene todos los datos : request.POST
+      form.save()
+  except:
+    # if request.method == 'POST':
+    task.completada = timezone.now()
+    task.save()
+  return redirect('tasks')
+
+
+    
+
+
+
+
+
+   
+
 
     
 
