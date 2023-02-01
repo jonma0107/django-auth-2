@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'crud'
 ]
 
-CSRF_TRUSTED_ORIGINS = ['django-auth-2-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://django-auth-2-production.up.railway.app']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
