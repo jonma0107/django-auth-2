@@ -14,7 +14,11 @@ def home(request):
 
 def tasks(request):
   lista = Task.objects.filter(user=request.user, completada__isnull=True)
-  return render(request, 'tasks.html', {'objetos':lista})  
+  return render(request, 'tasks.html', {'objetos':lista})
+
+def tasks_completed(request):
+  lista = Task.objects.filter(user=request.user, completada__isnull=False).order_by('-completada')
+  return render(request, 'tasks_completed.html', {'completadas':lista})
 
 def create_tasks(request):
   if request.method == 'GET':
@@ -22,13 +26,13 @@ def create_tasks(request):
   else:
     if request.POST['descripcion'] == '':
       crear = render(request, 'create_task.html', { 'form': TaskForm, 'error': 'la descripcion debe llenarse' })
-      return crear      
+      return crear
     else:
       form = TaskForm(request.POST)
       task_new = form.save(commit=False)
       task_new.user = request.user
       task_new.save()
-      return redirect('tasks')  
+      return redirect('tasks')
 
 def signup(request):
   if request.method == 'GET':
@@ -61,7 +65,7 @@ def signin(request):
       return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Credenciales no validas'})
     else:
       login(request, user)
-      return redirect('tasks')  
+      return redirect('tasks')
 
 # OBTENER y ACTUALIZAR TAREA
 def task_detail(request, task_id):
@@ -98,18 +102,18 @@ def completed_task(request, task_id):
   return redirect('tasks')
 
 
-    
 
 
 
 
 
-   
 
 
-    
-
-      
 
 
-        
+
+
+
+
+
+
