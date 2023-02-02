@@ -4,10 +4,17 @@
 
 <h1>LOGIN</h1>
 
-{{error}}
+{% if error %}
+  <div id="error">{{error}}</div>
+  <script>
+    setTimeout(function() {
+      document.querySelector("#error").style.display = "none";
+    }, 5000);
+  </script>
+{% endif %}
 
 <form action="{% url 'signin' %}" method="POST">
-  {% csrf_token %}  
+  {% csrf_token %}
   {{form.as_p}}
   <button type="submit">Entrar</button>
 </form>
