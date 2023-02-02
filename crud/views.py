@@ -6,20 +6,24 @@ from django.db import IntegrityError
 from .forms import TaskForm
 from .models import *
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 def home(request):
   return render(request, 'home.html')
 
+@login_required
 def tasks(request):
   lista = Task.objects.filter(user=request.user, completada__isnull=True)
   return render(request, 'tasks.html', {'objetos':lista})
 
+@login_required
 def tasks_completed(request):
   lista = Task.objects.filter(user=request.user, completada__isnull=False).order_by('-completada')
   return render(request, 'tasks_completed.html', {'completadas':lista})
 
+@login_required
 def create_tasks(request):
   if request.method == 'GET':
     return render(request, 'create_task.html', { 'form': TaskForm })
@@ -68,6 +72,7 @@ def signin(request):
       return redirect('tasks')
 
 # OBTENER y ACTUALIZAR TAREA
+@login_required
 def task_detail(request, task_id):
   if request.method == 'GET':
     # task = Task.objects.get(pk=task_id)
@@ -89,6 +94,7 @@ def task_detail(request, task_id):
           return render(request, 'task_detail.html', { 'task': task, 'form': form, 'error': 'Error al actualizar' })
 
 # TAREA COMPLETADA : ELIMINADA
+@login_required
 def completed_task(request, task_id):
   task = get_object_or_404(Task, pk=task_id, user=request.user)
   try:
