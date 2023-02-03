@@ -4,7 +4,6 @@
 
 <h1>Tareas Pendientes</h1>
 
-
 <ul>
   {% for objeto in objetos %}
   <li>
@@ -19,21 +18,13 @@
     </a>
 
     {% endif %}
-    <!-- <a href="{% url 'task_detail' objeto.id %}">
-      {% if objeto.realizada %}
-      <h2 style="color: red;"><b>{{objeto.titulo}}</b></h2>
-      {% else %}
-      <h2 style="color: green;"><b>{{objeto.titulo}}</b></h2>
-      {% endif %}
-    </a>   -->
+    
     <h1>Descripcion: </h1>
     <a href="{% url 'task_detail' objeto.id %}">
       <p>{{objeto.descripcion}}</p>
     </a>
     <h1>Autor: </h1>
-    <p>{{objeto.user.username}}</p>
-    <!-- <p>{{objeto.realizada}}</p> -->
-    
+    <p>{{objeto.user.username}}</p>    
   </li>
   {% endfor %}
 </ul>

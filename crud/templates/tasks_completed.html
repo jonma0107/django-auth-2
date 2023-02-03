@@ -4,19 +4,27 @@
 
 <h1>Tareas Completadas</h1>
 
-
 <ul>
   {% for completada in completadas %}
   <li>
     <h1>Tarea: </h1>
-    {% if completada %}
+    {% if completada.completada %}
       <b style="color: green;">{{completada.titulo}}</b>
-      <h1>Fecha de Completada: </h1>
-      <p>{{completada.completada|date:'Y-m-d'}}</p>
-      <p>{{completada.completada|time:"h:i a"}}</p>
+      <h1>Fecha de tarea realizada: </h1>
+      <p>        
+        {{date}}        
+      </p>
     {% endif %}
-  </li>
+
+    <form action="{% url 'delete_task_completed' completada.id %}" method="POST">
+      {% csrf_token %}
+      <button>Eliminar Tarea</button>
+    </form>
+
+  </li>  
+  <hr>
   {% endfor %}
+
 </ul>
 
 {% endblock %}
