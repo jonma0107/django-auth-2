@@ -106,7 +106,7 @@ def completed_task(request, task_id):
       form.save()
   except:
     # if request.method == 'POST':
-    task.completada = timezone.now()    
+    # task.completada = timezone.now()    
     task.save()
   return redirect('tasks')
 
