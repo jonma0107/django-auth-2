@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm
 from .models import *
-# from django.utils import timezone
+from django.utils import timezone
 from datetime import date
 from django.contrib.auth.decorators import login_required
 
@@ -106,7 +106,7 @@ def completed_task(request, task_id):
       form.save()
   except:
     # if request.method == 'POST':
-    # task.completada = timezone.now()    
+    task.completada = timezone.now()    
     task.save()
   return redirect('tasks')
 
