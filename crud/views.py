@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from .forms import TaskForm
 from .models import *
 from django.utils import timezone
-from datetime import date
+# from datetime import date
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -23,8 +23,8 @@ def tasks(request):
 def tasks_completed(request):
   lista = Task.objects.filter(user=request.user, completada__isnull=False).order_by('-completada')
   # fecha = datetime.datetime.now() #sirve para tener fecha y hora en tiempo real, realizando previamente import datetime
-  fecha = date.today()
-  return render(request, 'tasks_completed.html', {'completadas':lista, 'date':fecha })
+  # fecha = date.today()
+  return render(request, 'tasks_completed.html', {'completadas':lista })
 
 @login_required
 def create_tasks(request):
@@ -32,7 +32,7 @@ def create_tasks(request):
     return render(request, 'create_task.html', { 'form': TaskForm })
   else:
     if request.POST['descripcion'] == '':
-      crear = render(request, 'create_task.html', { 'form': TaskForm, 'error': 'la descripcion debe llenarse' })
+      crear = render(request, 'create_task.html', { 'form': TaskForm, 'error': 'la descripción debe llenarse' })
       return crear
     else:
       form = TaskForm(request.POST)
@@ -69,7 +69,7 @@ def signin(request):
   else:
     user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
     if user is None:
-      return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Credenciales no validas'})
+      return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Credenciales no válidas'})
     else:
       login(request, user)
       return redirect('tasks')
@@ -96,9 +96,9 @@ def task_detail(request, task_id):
         except ErrorValue:
           return render(request, 'task_detail.html', { 'task': task, 'form': form, 'error': 'Error al actualizar' })
 
-# TAREA COMPLETADA : ELIMINADA
+# TAREA HECHA
 @login_required
-def completed_task(request, task_id):
+def task_done(request, task_id):
   task = get_object_or_404(Task, pk=task_id, user=request.user)
   try:
     if request.method == 'POST':
@@ -106,16 +106,9 @@ def completed_task(request, task_id):
       form.save()
   except:
     # if request.method == 'POST':
-    task.completada = timezone.now()    
+    task.completada = timezone.now()
     task.save()
   return redirect('tasks')
-
-# @login_required
-# def delete_task(request, task_id):
-#   task = get_object_or_404(Task, pk=task_id, user=request.user)
-#   if request.method == 'POST':
-#     task.delete()
-#     return redirect('tasks')
 
 @login_required
 def delete_task_completed(request, task_id):

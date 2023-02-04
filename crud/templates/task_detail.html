@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 
 {% block content %}
-  <h1>DETALLE DE TAREA</h1>
+  <h1>Detalles de Tareas Pendientes</h1>
 
   <h2 style="color: blue;">Tarea: {{task.titulo}}</h2>
   <h2 style="color: blue;">Descripción: {{task.descripcion}}</h2>
@@ -26,7 +26,7 @@
 
   <br>
 
-  <form action="{% url 'completed_task' task.id %}" method="POST">
+  <form action="{% url 'task_done' task.id %}" method="POST">
     {% csrf_token %}
     <button>Completada</button>
   </form>

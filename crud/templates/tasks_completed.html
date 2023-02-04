@@ -11,8 +11,8 @@
     {% if completada.completada %}
       <b style="color: green;">{{completada.titulo}}</b>
       <h1>Fecha de tarea realizada: </h1>
-      <p>        
-        {{date}}        
+      <p>
+        {{completada.completada|date:'M d Y'}}
       </p>
     {% endif %}
 
@@ -21,7 +21,7 @@
       <button>Eliminar Tarea</button>
     </form>
 
-  </li>  
+  </li>
   <hr>
   {% endfor %}
 

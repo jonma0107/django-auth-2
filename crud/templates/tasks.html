@@ -18,13 +18,13 @@
     </a>
 
     {% endif %}
-    
-    <h1>Descripcion: </h1>
+
+    <h1>Descripción: </h1>
     <a href="{% url 'task_detail' objeto.id %}">
       <p>{{objeto.descripcion}}</p>
     </a>
     <h1>Autor: </h1>
-    <p>{{objeto.user.username}}</p>    
+    <p>{{objeto.user.username}}</p>
   </li>
   {% endfor %}
 </ul>
