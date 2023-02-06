@@ -1,13 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- MANEJO DE ERRORES desde PYTHON -->
-{{error}}
 
-<form action="{% url 'signup' %}" method="POST">
-  {% csrf_token %} 
-  {{form.as_p}}
-  <button type="submit">Enviar</button>
-</form>
+
+<main class="container py-5">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <form action="{% url 'signup' %}" method="POST" class="card card-body text-center">
+
+        <h1>Registrarse</h1>
+      
+        <!-- MANEJO DE ERRORES desde PYTHON -->
+        {% if error %}
+        <div id="error">{{error}}</div>
+        <script>
+          const text = document.querySelector('#error');         
+          mensaje = text.innerHTML;
+
+          Swal.fire({
+            icon: 'error',
+            title: mensaje
+          })
+
+          setTimeout(function() {
+            document.querySelector("#error").style.display = "none";
+          }, 5000);
+
+        </script>
+      {% endif %}
+      
+        {% csrf_token %} 
+        <!-- {{form.as_p}} -->
+        <div class="mb-3">
+          <label for="username">User</label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="Escriba su usuario">        
+        </div>
+
+        <div class="mb-3">
+          <label for="password1">Password</label>
+          <input type="password" class="form-control" id="password1" name="password1" placeholder="Escriba su contraseña">        
+        </div>
+
+        <div class="mb-3">
+          <label for="password2">Confirm Password</label>
+          <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirma su contraseña">        
+        </div>
+
+        <button class="btn btn-primary">Enviar</button>        
+        
+      </form>
+      
+    </div>
+  </div>
+</main>
 
 {% endblock %}

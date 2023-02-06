@@ -42,37 +42,41 @@ def create_tasks(request):
       return redirect('tasks')
 
 def signup(request):
-  if request.method == 'GET':
-    return render(request, 'signup.html', {'form': UserCreationForm})
-  else:
-    if request.POST['password1'] == request.POST['password2']:
-      try:
-        user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
-        user.save()
-        login(request, user)
-        return redirect('tasks')
-      # MANEJO DE ERRORES
-      except IntegrityError:
-        return render(request, 'signup.html', {'form': UserCreationForm, 'error': "El ususario ya existe"})
+    if request.method == 'GET':
+      return render(request, 'signup.html', { 'form': TaskForm })
+    else:
+      if request.POST['username'] == "" or request.POST['password1'] == "" or request.POST['password2'] == "":
+        return render(request, 'signup.html', {'form': UserCreationForm, 'error': 'Todos los campos deben estar llenos'})
+      else:
+        if request.POST['password1'] == request.POST['password2']:
+          try:
+            user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
+            user.save()
+            login(request, user)
+            return redirect('tasks')
+          # MANEJO DE ERRORES
+          except IntegrityError:
+            return render(request, 'signup.html', {'form': UserCreationForm, 'error': "El ususario ya existe"})
 
-    return render(request, 'signup.html', {'form': UserCreationForm, 'error': "Las contraseñas no coinciden"})
-
+        return render(request, 'signup.html', {'form': UserCreationForm, 'error': "Las contraseñas no coinciden"})
+        
 def cerrar_sesion(request):
   logout(request)
   return redirect('home')  # redirect tiene como parametro la URL
 
 def signin(request):
   if request.method == 'GET':
-    return render(request, 'signin.html', {
-      'form': AuthenticationForm
-    })
+    return render(request, 'signin.html', {'form': AuthenticationForm})
   else:
     user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-    if user is None:
-      return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Credenciales no válidas'})
+    if request.POST['username'] == "" or request.POST['password'] == "":
+      return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Todos los campos deben estar llenos'})
     else:
-      login(request, user)
-      return redirect('tasks')
+      if user is None:
+        return render(request, 'signin.html', {'form': AuthenticationForm, 'error': 'Credenciales no válidas'})
+      else:
+        login(request, user)
+        return redirect('tasks')
 
 # OBTENER y ACTUALIZAR TAREA
 @login_required
