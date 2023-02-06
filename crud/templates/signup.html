@@ -8,7 +8,7 @@
     <div class="col-md-4 offset-md-4">
       <form action="{% url 'signup' %}" method="POST" class="card card-body text-center">
 
-        <h1>Registrarse</h1>
+        <h1 class="mb-3">Registrarse</h1>
       
         <!-- MANEJO DE ERRORES desde PYTHON -->
         {% if error %}
@@ -31,7 +31,7 @@
       
         {% csrf_token %} 
         <!-- {{form.as_p}} -->
-        <div class="mb-3">
+        <div class="mb-3 mt-3">
           <label for="username">User</label>
           <input type="text" class="form-control" id="username" name="username" placeholder="Escriba su usuario">        
         </div>

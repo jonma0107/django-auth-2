@@ -1,34 +1,54 @@
 {% extends 'base.html'%}
 
 {% block content %}
-  <h1>Detalles de Tareas Pendientes</h1>
 
-  <h2 style="color: blue;">Tarea: {{task.titulo}}</h2>
-  <h2 style="color: blue;">Descripción: {{task.descripcion}}</h2>
-  <h2 style="color: blue;">Autor: {{task.user.username}}</h2>
 
-  {% if error %}
+<main class="container py-5 d-flex justify-content-center">
+  <div class="row">
+    <div class="col-md-4 offset-md-4 card card-body ms-auto">
+        <h1 class="text-center mb-3">Detalle de Tareas Pendientes</h1>
+        
+        <div class="text-center">
+          <h3 style="color: blue;">Tarea: {{task.titulo}}</h3>
+          <h3 style="color: blue;">Descripción: {{task.descripcion}}</h3>
+          <h3 style="color: blue;">Autor: {{task.user.username}}</h3>
+        </div>
 
-  <div id="error">{{error}}</div>
-  <script>
-    setTimeout(function() {
-      document.querySelector("#error").style.display = "none";
-    }, 5000);
-  </script>
+        {% if error %}
+          <div id="error">{{error}}</div>
+          <script>
+            setTimeout(function() {
+              document.querySelector("#error").style.display = "none";
+            }, 5000);
+          </script>
+        {% endif %}
 
-  {% endif %}
+        <div class="text-center">
+          
+          <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button class="btn btn-primary mt-3">Actualizar</button>
+          </form>
+  
+          <br>
+  
+          <form action="{% url 'task_done' task.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn btn-primary">Completada</button>
+          </form>
 
-  <form action="" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>Actualizar</button>
-  </form>
+        </div>
 
-  <br>
 
-  <form action="{% url 'task_done' task.id %}" method="POST">
-    {% csrf_token %}
-    <button>Completada</button>
-  </form>
+
+        </div>
+
+
+      </div>
+    </div>
+  </main>
+
+  
 
 {% endblock %}

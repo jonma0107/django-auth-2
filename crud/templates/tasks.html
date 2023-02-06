@@ -2,31 +2,45 @@
 
 {% block content%}
 
-<h1>Tareas Pendientes</h1>
+<main class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h1 class="text-center display-3 py-5">Tareas Pendientes</h1>      
+      <ul class="list-group">
+        {% for objeto in objetos %}
+        <li class="list-group-item">
 
-<ul>
-  {% for objeto in objetos %}
-  <li>
-    <h1>Tarea: </h1>
-    {% if objeto.realizada %}
-    <a href="{% url 'task_detail' objeto.id %}">
-      <b style="color: green;">{{objeto.titulo}}</b>
-    </a>
-    {% else %}
-    <a href="{% url 'task_detail' objeto.id %}">
-      <p>{{objeto.titulo}}</p>
-    </a>
+          <div class="d-flex justify-content-between container">
+            <h3 >Tarea: </h3>
+            {% if objeto.realizada %}
+            <a href="{% url 'task_detail' objeto.id %}">
+              <b style="color: green;">{{objeto.titulo}}</b>
+            </a>
+            {% else %}
+            <a href="{% url 'task_detail' objeto.id %}">
+              <h3 class="fw-bold text-danger link-primary">{{objeto.titulo}}</h3>
+            </a>
+            {% endif %}        
+          </div>
 
-    {% endif %}
+          <div class="d-flex justify-content-between container">
+            <h3>Descripción: </h3>
+            <a href="{% url 'task_detail' objeto.id %}">
+              <h3 class="fw-bold text-danger text-wrap link-primary">{{objeto.descripcion}}</h3>
+            </a>
+          </div>
 
-    <h1>Descripción: </h1>
-    <a href="{% url 'task_detail' objeto.id %}">
-      <p>{{objeto.descripcion}}</p>
-    </a>
-    <h1>Autor: </h1>
-    <p>{{objeto.user.username}}</p>
-  </li>
-  {% endfor %}
-</ul>
+          <div class="d-flex justify-content-between container">
+            <h3>Autor: </h3>
+            <h3 class="fw-bold text-success">{{objeto.user.username}}</h3>
+          </div> 
+
+        </li>
+        {% endfor %}       
+      </ul>
+
+    </div>
+  </div>
+</main>
 
 {% endblock %}

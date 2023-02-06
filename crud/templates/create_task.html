@@ -1,24 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Crear Tarea</h1>
 
-{% if error %}
+<main class="container py-5">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">      
 
-  <div id="error">{{error}}</div>
-  <script>
-    setTimeout(function() {
-      document.querySelector("#error").style.display = "none";
-    }, 5000);
-  </script>
+      <form action="{% url 'create_tasks' %}" method="POST" class="card card-body">
 
-{% endif %}
+        <h1>Crear Tarea</h1>
 
-<form action="{% url 'create_tasks' %}" method="POST">
-  {% csrf_token %}
-  {{form.as_p}}
-  <button>Crear Tarea</button>
+        {% if error %}
 
-</form>
+        <div id="error">{{error}}</div>
+        <script>
+          setTimeout(function() {
+            document.querySelector("#error").style.display = "none";
+          }, 5000);
+        </script>
+
+        {% endif %}
+
+        {% csrf_token %}
+        {{form}}
+        <button class="btn btn-primary mt-3">Crear Tarea</button>
+
+      </form>
+
+    </div>
+  </div>
+</main>
+
+
 
 {% endblock %}
