@@ -2,29 +2,38 @@
 
 {% block content%}
 
-<h1>Tareas Completadas</h1>
+<main class="container py-5">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
 
-<ul>
-  {% for completada in completadas %}
-  <li>
-    <h1>Tarea: </h1>
-    {% if completada.completada %}
-      <b style="color: green;">{{completada.titulo}}</b>
-      <h1>Fecha de tarea realizada: </h1>
-      <p>
-        {{completada.completada|date:'M d Y'}}
-      </p>
-    {% endif %}
+      <h1 class="display-3 text-center">Tareas Realizadas</h1>
+      
+      <ol class="card card-body p-5 my-auto fw-bold text-center">
+        {% for completada in completadas %}
+        <li>
+          {% if completada.completada %}
+            <h2 class="text-success fw-bold">{{completada.titulo}}</h2>
+            <h2>Fecha de tarea realizada: </h2>
+            <h2 class="text-success">
+              {{completada.completada|date:'M d Y'}}
+            </h2>
+          {% endif %}
 
-    <form action="{% url 'delete_task_completed' completada.id %}" method="POST">
-      {% csrf_token %}
-      <button>Eliminar Tarea</button>
-    </form>
+            <form action="{% url 'delete_task_completed' completada.id %}" method="POST" class="text-center">
+              {% csrf_token %}
+              <button class="btn btn-danger">Eliminar Tarea</button>
+            </form>
 
-  </li>
-  <hr>
-  {% endfor %}
+            
+          </li>
+          <hr>
+          {% endfor %}
+          
+        </ol>
+      
 
-</ul>
+    </div>
+  </div>
+</main>
 
 {% endblock %}
